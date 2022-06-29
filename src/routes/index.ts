@@ -1,13 +1,13 @@
 // import { Router } from "express";
 const Router = require("express")
-const appointment = require("./appointments/appoimentsRoutes.ts");
-const paymentHistory = require("./paymentHistory/paymentHistoryRoutes.ts");
-const blogPost = require("./posts/postsRoutes.ts");
-const reviews = require("./reviews/reviewsRoutes.ts");
-const userClient = require("./userClient/userClientRoutes.ts");
+const appointment = require("./appointments/appoimentsRoutes");
+const paymentHistory = require("./paymentHistory/paymentHistoryRoutes");
+const blogPost = require("./posts/postsRoutes");
+const reviews = require("./reviews/reviewsRoutes");
+const userClient = require("./userClient/userClientRoutes");
 const userPsychologist = require("./userPsychologist/userPsychologistRoutes");
 const schedule = require('../routes/schedule/scheduleRoutes')
-const rememberPassword = require("./nodemailer/nodemailerRoutes.ts")
+const rememberPassword = require("./nodemailer/nodemailerRoutes")
 const admin = require("./admin/adminRoutes")
 const router = Router();
 
