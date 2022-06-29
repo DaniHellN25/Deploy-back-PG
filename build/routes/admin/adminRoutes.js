@@ -7,7 +7,7 @@ const express_1 = require("express");
 const signIn_1 = __importDefault(require("./signIn"));
 const { registerAdmin, getAllUserClient, getUserClientById, updateClientDetails, deleteClient, getAllUserPsychologist, updateUserPsychologist, deleteUserPsychologist, getPsychologistDetail, deletePost, } = require("./adminController");
 const adminRouter = (0, express_1.Router)();
-const ValidateAdmin = require("../../middleware/ValidateAdminToken");
+const ValidateAdmin = require("../../middleware/validateAdminToken");
 //Solo admin
 adminRouter.post("/logIn", signIn_1.default);
 adminRouter.post("/signUp", registerAdmin);

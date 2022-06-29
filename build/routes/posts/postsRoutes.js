@@ -4,7 +4,7 @@ const express_1 = require("express");
 const { createPost, getAllPosts, getAllCategory, filterPostsCategory, getOnePost, putPost, getPostsByPsychologistId, 
 // filterPostsByAuthor
 deletePost } = require("./posts");
-const validateAdmin = require('../../middleware/ValidateAdminToken');
+const validateAdmin = require('../../middleware/validateAdminToken');
 const validateClient = require('../../middleware/validateClient');
 const validatePsychologist = require('../../middleware/validatePsychologist');
 const postsRouter = (0, express_1.Router)();
