@@ -18,7 +18,7 @@ const userPsychologist_1 = __importDefault(require("../../models/userPsychologis
 module.exports = function (passport) {
     passport.use(new GoogleStrategy({
         clientID: process.env.GOOGLE_CLIENT_ID,
-        clientSecret: process.env.GOOGLE_CLIENTSECRET,
+        clientSecret: process.env.GOOGLE_CLIENT_SECRET,
         callbackURL: '/userclient/auth/google/callback',
     }, (accessToken, refreshToken, profile, done) => __awaiter(this, void 0, void 0, function* () {
         const newUser = {
