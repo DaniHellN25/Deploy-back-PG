@@ -5,7 +5,7 @@ const { createPayment, getAllPayments, getPaymentByClientId, getPaymentByPsychol
 const { createCheckoutSession } = require('./Stripe/checkout.js');
 const validatePychologist = require('../../middleware/validatePsychologist.js');
 const validateClient = require('../../middleware/validateClient.js');
-const validateAdmin = require('../../middleware/ValidateAdminToken.js');
+const validateAdmin = require('../../middleware/validateAdminToken.js');
 const paymentHistoryRouter = (0, express_1.Router)();
 paymentHistoryRouter.get('/', validateAdmin, getAllPayments);
 paymentHistoryRouter.get('/paymentsclient', validateClient, getPaymentByClientId);
