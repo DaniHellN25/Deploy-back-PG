@@ -1,4 +1,3 @@
-import { CannotBeSymbolError } from "@typegoose/typegoose/lib/internal/errors";
 import { Request, Response } from "express";
 import reviewsModel from "../../models/Reviews";
 import userPsychologistModel from "../../models/userPsychologist";
