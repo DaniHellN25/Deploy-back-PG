@@ -1,11 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
-const { createPayment, getAllPayments, getPaymentByClientId, getPaymentByPsychologistId } = require('./paymentHistory');
+const { createPayment, getAllPayments, getPaymentByClientId, getPaymentByPsychologistId } = require('./paymentHistory.js');
 const { createCheckoutSession } = require('./Stripe/checkout.js');
-const validatePychologist = require('../../middleware/validatePsychologist');
-const validateClient = require('../../middleware/validateClient');
-const validateAdmin = require('../../middleware/validateAdminToken');
+const validatePychologist = require('../../middleware/validatePsychologist.js');
+const validateClient = require('../../middleware/validateClient.js');
+const validateAdmin = require('../../middleware/ValidateAdminToken.js');
 const paymentHistoryRouter = (0, express_1.Router)();
 paymentHistoryRouter.get('/', validateAdmin, getAllPayments);
 paymentHistoryRouter.get('/paymentsclient', validateClient, getPaymentByClientId);
