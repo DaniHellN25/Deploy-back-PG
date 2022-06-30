@@ -80,7 +80,9 @@ const getUserPsychologist = (req, res, next) => __awaiter(void 0, void 0, void 0
 });
 ////Post/////
 const postUserPsychologist = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { firstname, lastname, email, password, birthdate, location, latitude, longitude, license, dni, specialities, profileimage, rating, education, about, } = req.body;
+    var _a;
+    const { firstname, lastname, email, password, birthdate, location, latitude, longitude, license, dni, specialities, rating, education, about, } = req.body;
+    const profileImage = (_a = req.file) === null || _a === void 0 ? void 0 : _a.path;
     try {
         const psychologistExist = yield userPsychologist_1.default.findOne({
             email: email,
@@ -101,7 +103,7 @@ const postUserPsychologist = (req, res) => __awaiter(void 0, void 0, void 0, fun
                 License: license,
                 DNI: dni,
                 Specialties: specialities,
-                profileImage: profileimage,
+                profileImage: profileImage,
                 rating: 1,
                 status: "Pendiente",
                 psychologistStatus: "Activo",
@@ -119,6 +121,9 @@ const postUserPsychologist = (req, res) => __awaiter(void 0, void 0, void 0, fun
                     user: "terapeandoportal@gmail.com",
                     pass: "pezufzhvclfbmuti",
                 },
+                tls: {
+                    rejectUnauthorized: false
+                }
             });
             transporter.verify().then(() => {
                 console.log("Ready to send emails");
@@ -143,7 +148,7 @@ const postUserPsychologist = (req, res) => __awaiter(void 0, void 0, void 0, fun
         }
     }
     catch (error) {
-        res.send({ error: "Validate your personal data" });
+        console.log(error);
     }
 });
 ///// Delete /////
@@ -164,8 +169,19 @@ const deleteUserPsychologist = (req, res) => __awaiter(void 0, void 0, void 0, f
     }
 });
 const putUserPsychologist = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    var _b, _c;
+    const { firstname, lastname, email, location, specialities, dni, about, } = req.body;
+    const profileImage = (_b = req.file) === null || _b === void 0 ? void 0 : _b.path;
     try {
-        yield userPsychologist_1.default.findByIdAndUpdate(req.user, req.body, {
+        yield userPsychologist_1.default.findByIdAndUpdate(req.user, {
+            profileImage: (_c = req.file) === null || _c === void 0 ? void 0 : _c.path,
+            firstname,
+            lastname,
+            email,
+            location,
+            specialities,
+            dni,
+            about,
             new: true,
         });
         res.status(200).send("Usuario editado correctamente");
