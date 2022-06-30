@@ -19,6 +19,7 @@ const validateClient = require('../../middleware/validateClient');
 const validateAdmin = require('../../middleware/validateAdminToken');
 const passport = require('passport');
 const userClients_1 = __importDefault(require("../../models/userClients"));
+const userPsychologist_1 = __importDefault(require("../../models/userPsychologist"));
 const clientRouter = (0, express_1.Router)();
 const jwt = require("jsonwebtoken");
 clientRouter.get('/auth/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
