@@ -26,8 +26,9 @@ clientRouter.post('/client/login', logInClient)
 clientRouter.delete('/deleteuserclient', validateClient, deleteUserClient)
 clientRouter.put('/editprofile', validateClient, putUserClient)
 clientRouter.get('/auth/google/callback', passport.authenticate('google'), async(req: any, res: Response) => {
+  console.log(req.user)
   if (req.user) { 
-      const user = await userClientModel.findOne({email: req.user.email });
+      const user = req.user.role === 'client' ?  await userClientModel.findOne({email: req.user.email }) : req.user.role === 'psychologist' ? await userPsychologistModel.findOne({email: req.user.email }) : null
       const userForToken = {
           id: user?._id,
           role: user?.role
@@ -35,12 +36,11 @@ clientRouter.get('/auth/google/callback', passport.authenticate('google'), async
     const token = jwt.sign(userForToken, process.env.SECRETWORD, {
       expiresIn: 60 * 60 * 24 // equivalente a 24 horas
     })
-    res.redirect(`http://localhost:3000/home?role=${req.user.role}&token=${token}`)
+    res.redirect(`https://terapeando.vercel.app/home?role=${req.user.role}&token=${token}`)
   } else {
-      res.redirect('http//localhost:3000/signin')
+      res.redirect('https://terapeando.vercel.app/signin')
   } 
 })
-
 
 //Falta middleware solo de admin
 module.exports = clientRouter;  

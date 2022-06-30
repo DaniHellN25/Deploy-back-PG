@@ -16,9 +16,10 @@ const express_1 = require("express");
 const signIn_1 = __importDefault(require("./signIn"));
 const { getUserClient, createUserClient, deleteUserClient, putUserClient, getPsychologistDetails, googleLogin } = require('./userClient');
 const validateClient = require('../../middleware/validateClient');
-const validateAdmin = require('../../middleware/validateAdminToken');
+const validateAdmin = require('../../middleware/ValidateAdminToken');
 const passport = require('passport');
 const userClients_1 = __importDefault(require("../../models/userClients"));
+const userPsychologist_1 = __importDefault(require("../../models/userPsychologist"));
 const clientRouter = (0, express_1.Router)();
 const jwt = require("jsonwebtoken");
 clientRouter.get('/auth/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
@@ -29,8 +30,9 @@ clientRouter.post('/client/login', signIn_1.default);
 clientRouter.delete('/deleteuserclient', validateClient, deleteUserClient);
 clientRouter.put('/editprofile', validateClient, putUserClient);
 clientRouter.get('/auth/google/callback', passport.authenticate('google'), (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log(req.user);
     if (req.user) {
-        const user = yield userClients_1.default.findOne({ email: req.user.email });
+        const user = req.user.role === 'client' ? yield userClients_1.default.findOne({ email: req.user.email }) : req.user.role === 'psychologist' ? yield userPsychologist_1.default.findOne({ email: req.user.email }) : null;
         const userForToken = {
             id: user === null || user === void 0 ? void 0 : user._id,
             role: user === null || user === void 0 ? void 0 : user.role
@@ -38,10 +40,10 @@ clientRouter.get('/auth/google/callback', passport.authenticate('google'), (req,
         const token = jwt.sign(userForToken, process.env.SECRETWORD, {
             expiresIn: 60 * 60 * 24 // equivalente a 24 horas
         });
-        res.redirect(`http://localhost:3000/home?role=${req.user.role}&token=${token}`);
+        res.redirect(`https://terapeando.vercel.app/home?role=${req.user.role}&token=${token}`);
     }
     else {
-        res.redirect('http//localhost:3000/signin');
+        res.redirect('https://terapeando.vercel.app/signin');
     }
 }));
 //Falta middleware solo de admin
