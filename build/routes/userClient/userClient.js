@@ -108,20 +108,20 @@ const putUserClient = (req, res) => __awaiter(void 0, void 0, void 0, function* 
     const { firstname, lastname, email, country, } = req.body;
     const profileImage = (_b = req.file) === null || _b === void 0 ? void 0 : _b.path;
     try {
-        const user = yield userClients_1.default.findByIdAndUpdate(req.user, req.body, {
-            firstname,
-            lastname,
-            email,
-            country,
-            profileImage: profileImage,
-            new: true
-        });
-        res.status(200).send('Usuario editado correctamente');
+          const user = yield userClients_1.default.findByIdAndUpdate(req.user, {
+      firstName: firstname,
+      lastName: lastname,
+      email, 
+      country,
+      profileImage 
+    }, {new: true})
+    res.status(200).send('Usuario editado correctamente')
     }
     catch (err) {
         res.status(404).send('There was an error...');
     }
 });
+
 module.exports = {
     getUserClient,
     createUserClient,
