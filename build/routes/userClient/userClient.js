@@ -76,12 +76,9 @@ const createUserClient = (req, res) => __awaiter(void 0, void 0, void 0, functio
                 subject: "Confirmacion de registro",
                 html: `<h1>Bienvenido ${firstname} ${lastname} a Terapeando!</h1>
                   <p>Tu cuenta para ${email} ha sido creada con éxito.
+   <p>Tu cuenta para ${email} ha sido creada con éxito.
                   Para ingresar a tu cuenta haz click <a href= https://terapeando.vercel.app/signin>aqui<a/></p>
-<<<<<<< HEAD
             `,
-=======
-            `
->>>>>>> 589a601bb1e0cd3951aa01468161b9c2b7031374
             };
             yield transporter.sendMail(mailOptions, (error) => {
                 if (error) {
