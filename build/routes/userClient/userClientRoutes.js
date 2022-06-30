@@ -33,6 +33,7 @@ clientRouter.put('/editprofile', upload.single('profileImage'), validateClient, 
 clientRouter.get('/auth/google/callback', passport.authenticate('google'), (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     console.log(req.user);
     if (req.user) {
+       if (req.user) {
         const user = req.user.role === 'client' ? yield userClients_1.default.findOne({ email: req.user.email }) : req.user.role === 'psychologist' ? yield userPsychologist_1.default.findOne({ email: req.user.email }) : null;
         const userForToken = {
             id: user === null || user === void 0 ? void 0 : user._id,
@@ -41,17 +42,10 @@ clientRouter.get('/auth/google/callback', passport.authenticate('google'), (req,
         const token = jwt.sign(userForToken, process.env.SECRETWORD, {
             expiresIn: 60 * 60 * 24 // equivalente a 24 horas
         });
-<<<<<<< HEAD
         res.redirect(`https://terapeando.vercel.app/home?role=${req.user.role}&token=${token}`);
     }
     else {
         res.redirect('https://terapeando.vercel.app/signin');
-=======
-        res.redirect(`https://prueba-terapeando.herokuapp.com/home?role=${req.user.role}&token=${token}`);
-    }
-    else {
-        res.redirect('https://prueba-terapeando.herokuapp.com/signin');
->>>>>>> 589a601bb1e0cd3951aa01468161b9c2b7031374
     }
 }));
 //Falta middleware solo de admin
