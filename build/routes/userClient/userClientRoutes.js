@@ -22,13 +22,14 @@ const userClients_1 = __importDefault(require("../../models/userClients"));
 const userPsychologist_1 = __importDefault(require("../../models/userPsychologist"));
 const clientRouter = (0, express_1.Router)();
 const jwt = require("jsonwebtoken");
+const upload = require('../../middleware/upload');
 clientRouter.get('/auth/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
 clientRouter.get('/client', validateClient, getUserClient);
 clientRouter.get('/:IdUserPsychologist', validateClient, getPsychologistDetails);
-clientRouter.post('/client/register', createUserClient);
+clientRouter.post('/client/register', upload.single('profileImage'), createUserClient);
 clientRouter.post('/client/login', signIn_1.default);
 clientRouter.delete('/deleteuserclient', validateClient, deleteUserClient);
-clientRouter.put('/editprofile', validateClient, putUserClient);
+clientRouter.put('/editprofile', upload.single('profileImage'), validateClient, putUserClient);
 clientRouter.get('/auth/google/callback', passport.authenticate('google'), (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     console.log(req.user);
     if (req.user) {
@@ -40,10 +41,17 @@ clientRouter.get('/auth/google/callback', passport.authenticate('google'), (req,
         const token = jwt.sign(userForToken, process.env.SECRETWORD, {
             expiresIn: 60 * 60 * 24 // equivalente a 24 horas
         });
+<<<<<<< HEAD
         res.redirect(`https://terapeando.vercel.app/home?role=${req.user.role}&token=${token}`);
     }
     else {
         res.redirect('https://terapeando.vercel.app/signin');
+=======
+        res.redirect(`https://prueba-terapeando.herokuapp.com/home?role=${req.user.role}&token=${token}`);
+    }
+    else {
+        res.redirect('https://prueba-terapeando.herokuapp.com/signin');
+>>>>>>> 589a601bb1e0cd3951aa01468161b9c2b7031374
     }
 }));
 //Falta middleware solo de admin

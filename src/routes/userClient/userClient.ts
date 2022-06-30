@@ -36,9 +36,10 @@ const createUserClient = async (req: Request, res: Response) => {
     birthdate,
     country,
     email,
-    profileimage,
     password,
   } = req.body;
+
+  const profileImage = req.file?.path
 
   try {
     const userExist = await userClientModel.findOne({ email: email });
@@ -51,12 +52,12 @@ const createUserClient = async (req: Request, res: Response) => {
         birthDate: birthdate,
         country: country,
         email: email,
-        profileImage: profileimage,
+        profileImage: profileImage,
         password: password,
         role: "client",
       });
       res.status(201).send("Welcome to our community, now you can sign in");
-      //----email confirmation
+
       const transporter = nodemailer.createTransport({
         host: "smtp.gmail.com",
         port: 465,
@@ -65,6 +66,9 @@ const createUserClient = async (req: Request, res: Response) => {
           user: "terapeandoportal@gmail.com",
           pass: "pezufzhvclfbmuti",
         },
+        tls: {
+          rejectUnauthorized: false
+        }
       });
 
       transporter.verify().then(() => {
@@ -94,6 +98,7 @@ const createUserClient = async (req: Request, res: Response) => {
   }
 };
 
+
 const deleteUserClient = async (req: Request, res: Response) => {
   try {
     const userClientDelete = await userClientModel.findOneAndDelete(req.user);
@@ -105,12 +110,29 @@ const deleteUserClient = async (req: Request, res: Response) => {
 
 
 const putUserClient = async (req: Request, res: Response) => {
-   try {
-      const user = await userClientModel.findByIdAndUpdate(req.user, req.body, { new: true })
-      res.status(200).send('Usuario editado correctamente')
-   } catch (err) {
-      res.status(404).send('There was an error...');
-   }
+  const {
+    firstname,
+    lastname,
+    email,
+    country,
+  } = req.body;
+
+  const profileImage = req.file?.path
+
+
+  try {
+    const user = await userClientModel.findByIdAndUpdate(req.user, req.body, {
+      firstname,
+      lastname,
+      email,
+      country,
+      profileImage: profileImage,
+      new: true
+    })
+    res.status(200).send('Usuario editado correctamente')
+  } catch (err) {
+    res.status(404).send('There was an error...');
+  }
 };
 
 

@@ -16,15 +16,16 @@ import userClientModel from "../../models/userClients";
 import userPsychologistModel from "../../models/userPsychologist";
 const clientRouter: Router = Router();
 const jwt = require("jsonwebtoken");
+const upload   = require('../../middleware/upload');
 
 
 clientRouter.get('/auth/google', passport.authenticate('google', { scope: ['profile', 'email'] }))
 clientRouter.get('/client', validateClient, getUserClient);
 clientRouter.get('/:IdUserPsychologist', validateClient, getPsychologistDetails)
-clientRouter.post('/client/register', createUserClient)
+clientRouter.post('/client/register', upload.single('profileImage'), createUserClient)
 clientRouter.post('/client/login', logInClient)
 clientRouter.delete('/deleteuserclient', validateClient, deleteUserClient)
-clientRouter.put('/editprofile', validateClient, putUserClient)
+clientRouter.put('/editprofile', upload.single('profileImage'), validateClient, putUserClient)
 clientRouter.get('/auth/google/callback', passport.authenticate('google'), async(req: any, res: Response) => {
   console.log(req.user)
   if (req.user) { 
