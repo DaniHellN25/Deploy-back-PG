@@ -41,17 +41,10 @@ clientRouter.get('/auth/google/callback', passport.authenticate('google'), (req,
         const token = jwt.sign(userForToken, process.env.SECRETWORD, {
             expiresIn: 60 * 60 * 24 // equivalente a 24 horas
         });
-<<<<<<< HEAD
         res.redirect(`https://terapeando.vercel.app/home?role=${req.user.role}&token=${token}`);
     }
     else {
         res.redirect('https://terapeando.vercel.app/signin');
-=======
-        res.redirect(`https://prueba-terapeando.herokuapp.com/home?role=${req.user.role}&token=${token}`);
-    }
-    else {
-        res.redirect('https://prueba-terapeando.herokuapp.com/signin');
->>>>>>> 589a601bb1e0cd3951aa01468161b9c2b7031374
     }
 }));
 //Falta middleware solo de admin
