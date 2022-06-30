@@ -170,21 +170,22 @@ const deleteUserPsychologist = (req, res) => __awaiter(void 0, void 0, void 0, f
 });
 const putUserPsychologist = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _b, _c;
-    const { firstname, lastname, email, location, specialities, dni, about, latitude, longitude} = req.body;
+    const { firstName, lastName, email, password, location, latitude, longitude, Licencia, DNI, education, about} = req.body;
     const profileImage = (_b = req.file) === null || _b === void 0 ? void 0 : _b.path;
     try {
         yield userPsychologist_1.default.findByIdAndUpdate(req.user, {
             profileImage: (_c = req.file) === null || _c === void 0 ? void 0 : _c.path,
-                   firstName: firstname,
-            lastName: lastname,
+            firstName: firstName,
+            lastName: lastName,
             email,
+            password,
             location,
-            Specialties: specialities,
-            DNI: dni, 
-            about,
-            License: license,
             latitude,
             longitude,
+            License: Licencia,
+            DNI: DNI,
+            profileImage: profileImage,
+            about,
             new: true,
         });
         res.status(200).send("Usuario editado correctamente");
