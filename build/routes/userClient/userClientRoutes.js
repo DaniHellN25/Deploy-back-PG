@@ -33,7 +33,6 @@ clientRouter.put('/editprofile', upload.single('profileImage'), validateClient, 
 clientRouter.get('/auth/google/callback', passport.authenticate('google'), (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     console.log(req.user);
     if (req.user) {
-         if (req.user) {
         const user = req.user.role === 'client' ? yield userClients_1.default.findOne({ email: req.user.email }) : req.user.role === 'psychologist' ? yield userPsychologist_1.default.findOne({ email: req.user.email }) : null;
         const userForToken = {
             id: user === null || user === void 0 ? void 0 : user._id,
