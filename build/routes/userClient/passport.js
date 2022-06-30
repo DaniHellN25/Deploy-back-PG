@@ -27,9 +27,7 @@ module.exports = function (passport) {
         try {
             //find the user in our database 
             let user = yield userClients_1.default.findOne({ email: newUser.email });
-            console.log('cliente', user);
             user ? null : user = yield userPsychologist_1.default.findOne({ email: newUser.email });
-            console.log('psicologo', user);
             if (user) {
                 //If user present in our database.
                 done(null, user);
