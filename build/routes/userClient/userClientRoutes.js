@@ -19,6 +19,7 @@ const validateClient = require('../../middleware/validateClient');
 const validateAdmin = require('../../middleware/ValidateAdminToken');
 const passport = require('passport');
 const userClients_1 = __importDefault(require("../../models/userClients"));
+const userPsychologist_1 = __importDefault(require("../../models/userPsychologist"));
 const clientRouter = (0, express_1.Router)();
 const jwt = require("jsonwebtoken");
 const upload = require('../../middleware/upload');
@@ -31,7 +32,7 @@ clientRouter.delete('/deleteuserclient', validateClient, deleteUserClient);
 clientRouter.put('/editprofile', upload.single('profileImage'), validateClient, putUserClient);
 clientRouter.get('/auth/google/callback', passport.authenticate('google'), (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     if (req.user) {
-        const user = yield userClients_1.default.findOne({ email: req.user.email });
+        const user = req.user.role === 'client' ? yield userClients_1.default.findOne({ email: req.user.email }) : req.user.role === 'psychologist' ? yield userPsychologist_1.default.findOne({ email: req.user.email }) : null;
         const userForToken = {
             id: user === null || user === void 0 ? void 0 : user._id,
             role: user === null || user === void 0 ? void 0 : user.role
