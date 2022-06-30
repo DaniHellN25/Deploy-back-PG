@@ -105,12 +105,12 @@ const deleteUserClient = (req, res) => __awaiter(void 0, void 0, void 0, functio
 });
 const putUserClient = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _b;
-    const { firstname, lastname, email, country, } = req.body;
+    const { firstName, lastName, email, country, } = req.body;
     const profileImage = (_b = req.file) === null || _b === void 0 ? void 0 : _b.path;
     try {
           const user = yield userClients_1.default.findByIdAndUpdate(req.user, {
-      firstName: firstname,
-      lastName: lastname,
+      firstName: firstName,
+      lastName: lastName,
       email, 
       country,
       profileImage 
