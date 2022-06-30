@@ -100,11 +100,12 @@ const postUserPsychologist = async (req: Request, res: Response) => {
     license,
     dni,
     specialities,
-    profileimage,
     rating,
     education,
     about,
   } = req.body;
+
+  const profileImage = req.file?.path
 
   try {
     const psychologistExist = await userPsychologistModel.findOne({
@@ -125,7 +126,7 @@ const postUserPsychologist = async (req: Request, res: Response) => {
         License: license,
         DNI: dni,
         Specialties: specialities,
-        profileImage: profileimage,
+        profileImage: profileImage,
         rating: 1,
         status: "Pendiente",
         psychologistStatus: "Activo",
@@ -143,6 +144,10 @@ const postUserPsychologist = async (req: Request, res: Response) => {
           user: "terapeandoportal@gmail.com",
           pass: "pezufzhvclfbmuti",
         },
+
+        tls: {
+          rejectUnauthorized: false
+        }
       });
 
       transporter.verify().then(() => {
@@ -155,7 +160,7 @@ const postUserPsychologist = async (req: Request, res: Response) => {
         subject: "Confirmacion de registro",
         html: `<h1>Bienvenido ${firstname} ${lastname} a Terapeando!</h1>
                   <p>Tu cuenta para ${email} ha sido creada con éxito.
-                  Para ingresar a tu cuenta haz click <a href= http://localhost:3000/signin>aqui<a/></p>
+                  Para ingresar a tu cuenta haz click <a href= https://terapeando.vercel.app/signin>aqui<a/></p>
             `,
       };
 
@@ -168,7 +173,7 @@ const postUserPsychologist = async (req: Request, res: Response) => {
       });
     }
   } catch (error) {
-    res.send({ error: "Validate your personal data" });
+    console.log(error);
   }
 };
 ///// Delete /////
@@ -193,9 +198,31 @@ const deleteUserPsychologist = async (req: Request, res: Response) => {
 };
 
 const putUserPsychologist = async (req: Request, res: Response) => {
+
+  const {
+    firstname,
+    lastname,
+    email,
+    location,
+    specialities,
+    dni,
+    about,
+  } = req.body;
+
+  const profileImage = req.file?.path
+
   try {
-    await userPsychologistModel.findByIdAndUpdate(req.user, req.body, {
+    await userPsychologistModel.findByIdAndUpdate(req.user, {
+      profileImage: req.file?.path,
+      firstname,
+      lastname,
+      email,
+      location,
+      specialities,
+      dni,
+      about,
       new: true,
+
     });
     res.status(200).send("Usuario editado correctamente");
   } catch (error) {

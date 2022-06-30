@@ -16,22 +16,22 @@ const express_1 = require("express");
 const signIn_1 = __importDefault(require("./signIn"));
 const { getUserClient, createUserClient, deleteUserClient, putUserClient, getPsychologistDetails, googleLogin } = require('./userClient');
 const validateClient = require('../../middleware/validateClient');
-const validateAdmin = require('../../middleware/validateAdminToken');
+const validateAdmin = require('../../middleware/ValidateAdminToken');
 const passport = require('passport');
 const userClients_1 = __importDefault(require("../../models/userClients"));
-const userPsychologist_1 = __importDefault(require("../../models/userPsychologist"));
 const clientRouter = (0, express_1.Router)();
 const jwt = require("jsonwebtoken");
+const upload = require('../../middleware/upload');
 clientRouter.get('/auth/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
 clientRouter.get('/client', validateClient, getUserClient);
 clientRouter.get('/:IdUserPsychologist', validateClient, getPsychologistDetails);
-clientRouter.post('/client/register', createUserClient);
+clientRouter.post('/client/register', upload.single('profileImage'), createUserClient);
 clientRouter.post('/client/login', signIn_1.default);
 clientRouter.delete('/deleteuserclient', validateClient, deleteUserClient);
-clientRouter.put('/editprofile', validateClient, putUserClient);
+clientRouter.put('/editprofile', upload.single('profileImage'), validateClient, putUserClient);
 clientRouter.get('/auth/google/callback', passport.authenticate('google'), (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     if (req.user) {
-        const user = req.user.role === 'client' ? yield userClients_1.default.findOne({ email: req.user.email }) : req.user.role === 'psychologist' ? yield userPsychologist_1.default.findOne({ email: req.user.email }) : null;
+        const user = yield userClients_1.default.findOne({ email: req.user.email });
         const userForToken = {
             id: user === null || user === void 0 ? void 0 : user._id,
             role: user === null || user === void 0 ? void 0 : user.role
@@ -39,10 +39,10 @@ clientRouter.get('/auth/google/callback', passport.authenticate('google'), (req,
         const token = jwt.sign(userForToken, process.env.SECRETWORD, {
             expiresIn: 60 * 60 * 24 // equivalente a 24 horas
         });
-        res.redirect(`https://terapeando.vercel.app/home?role=${req.user.role}&token=${token}`);
+        res.redirect(`https://prueba-terapeando.herokuapp.com/home?role=${req.user.role}&token=${token}`);
     }
     else {
-        res.redirect('https://terapeando.vercel.app/signin');
+        res.redirect('https://prueba-terapeando.herokuapp.com/signin');
     }
 }));
 //Falta middleware solo de admin

@@ -35,7 +35,9 @@ const getPsychologistDetails = (req, res) => __awaiter(void 0, void 0, void 0, f
     }
 });
 const createUserClient = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { firstname, lastname, birthdate, country, email, profileimage, password, } = req.body;
+    var _a;
+    const { firstname, lastname, birthdate, country, email, password, } = req.body;
+    const profileImage = (_a = req.file) === null || _a === void 0 ? void 0 : _a.path;
     try {
         const userExist = yield userClients_1.default.findOne({ email: email });
         if (userExist) {
@@ -48,12 +50,11 @@ const createUserClient = (req, res) => __awaiter(void 0, void 0, void 0, functio
                 birthDate: birthdate,
                 country: country,
                 email: email,
-                profileImage: profileimage,
+                profileImage: profileImage,
                 password: password,
                 role: "client",
             });
             res.status(201).send("Welcome to our community, now you can sign in");
-            //----email confirmation
             const transporter = nodemailer.createTransport({
                 host: "smtp.gmail.com",
                 port: 465,
@@ -62,6 +63,9 @@ const createUserClient = (req, res) => __awaiter(void 0, void 0, void 0, functio
                     user: "terapeandoportal@gmail.com",
                     pass: "pezufzhvclfbmuti",
                 },
+                tls: {
+                    rejectUnauthorized: false
+                }
             });
             transporter.verify().then(() => {
                 console.log("Ready to send emails");
@@ -73,7 +77,7 @@ const createUserClient = (req, res) => __awaiter(void 0, void 0, void 0, functio
                 html: `<h1>Bienvenido ${firstname} ${lastname} a Terapeando!</h1>
                   <p>Tu cuenta para ${email} ha sido creada con éxito.
                   Para ingresar a tu cuenta haz click <a href= https://terapeando.vercel.app/signin>aqui<a/></p>
-            `,
+            `
             };
             yield transporter.sendMail(mailOptions, (error) => {
                 if (error) {
@@ -99,8 +103,18 @@ const deleteUserClient = (req, res) => __awaiter(void 0, void 0, void 0, functio
     }
 });
 const putUserClient = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    var _b;
+    const { firstname, lastname, email, country, } = req.body;
+    const profileImage = (_b = req.file) === null || _b === void 0 ? void 0 : _b.path;
     try {
-        const user = yield userClients_1.default.findByIdAndUpdate(req.user, req.body, { new: true });
+        const user = yield userClients_1.default.findByIdAndUpdate(req.user, req.body, {
+            firstname,
+            lastname,
+            email,
+            country,
+            profileImage: profileImage,
+            new: true
+        });
         res.status(200).send('Usuario editado correctamente');
     }
     catch (err) {
